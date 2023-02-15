@@ -21,7 +21,7 @@ class HBNBCommand(Cmd):
         """Ends the command line prompt"""
         return True
 
-    def do_emptyline(self, line):
+    def emptyline(self):
         """This ignores an empty line in the command prompt"""
         pass
 
