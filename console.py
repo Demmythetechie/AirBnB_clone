@@ -11,11 +11,16 @@ from models.engine.file_storage import FileStorage
 
 class HBNBCommand(Cmd):
 
-    prompt = "(hbnb) " 
+    prompt = "(hbnb) "
 
     def do_EOF(self, Line):
         """Ends the command line prompt"""
         return True
+
+    def emptyline(self , line):
+        """This ignores an empty line in the command prompt"""
+
+        pass
 
     def do_quit(self, line):
         """Quit command to exit the program"""
@@ -52,6 +57,7 @@ class HBNBCommand(Cmd):
                 if key == k:
                     val = value
             print(val)
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

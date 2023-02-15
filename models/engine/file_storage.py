@@ -11,10 +11,10 @@ class FileStorage:
     possible to store our data to a json file
     """
 
-    #private class Atribute for json.file
+    # private class Atribute for json.file
     __file_path = "file.json"
 
-    #private class Attributes for attribute dict
+    # private class Attributes for attribute dict
     __objects = {}
 
     def all(self):
@@ -44,7 +44,6 @@ class FileStorage:
             for k, v in self.__objects.items():
                 dict_storage[k] = v.to_dict()
             json.dump(dict_storage, f)
-
 
     def reload(self):
         """
