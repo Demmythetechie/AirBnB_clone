@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 """
+console 
 """
 
 from cmd import Cmd
@@ -10,6 +11,9 @@ from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(Cmd):
+    """
+    console
+    """
 
     prompt = "(hbnb) "
 
