@@ -1,0 +1,8 @@
+/* This is the css style for the body element applied to the p element in  the footer */
+body {
+	padding: 0;
+	margin: 0;
+	color: #484848;
+	font-size: 14px;
+	font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

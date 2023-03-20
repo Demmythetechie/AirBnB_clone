@@ -1,66 +1,32 @@
 #!/usr/bin/python3
-
 """
-console 
+This module helps bring our code to live using a cmd interpreter
+as the frontend for now. The cmd module act as a testing frontend
+making it easy to test and debug our code easily without a GUI
+frontend
 """
-
 from cmd import Cmd
-from models.base_model import BaseModel
-from models import storage
-from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(Cmd):
     """
-    console
+    This class contains all the command method
+    that will be used during the testing
     """
 
     prompt = "(hbnb) "
 
-    def do_EOF(self, Line):
-        """Ends the command line prompt"""
+    def do_quit(self, par1):
+        """This exits the Command line interpreter"""
+        return True
+
+    def do_EOF(self, par1):
+        """This exits the Command line interpreter"""
         return True
 
     def emptyline(self):
-        """This ignores an empty line in the command prompt"""
-        pass
-
-    def do_quit(self, line):
-        """Quit command to exit the program"""
-        return True
-
-    def do_create(self, line=""):
-        """Creates new instances of the base model class"""
-        if line == "BaseModel":
-            my_model = BaseModel()
-            my_model.save()
-            print(my_model.id)
-        elif line == "":
-            print("** class name missing **")
-        else:
-            print("** class doesn't exist **")
-
-    def do_show(self, cl=''):
-        """Prints the string representation of an instance based
-        on the class name and id"""
-
-        ls = cl.split(' ')
-        val = "** no instance found **"
-
-        if cl == '':
-            print("** class name missing **")
-        elif ls[0] != "BaseModel":
-            print("** class doesn't exist **")
-        elif len(ls) == 1:
-            print("** instance id missing **")
-        else:
-            ls_obj = storage.all()
-            k = cl.replace(' ', '.')
-            for key, value in ls_obj.items():
-                if key == k:
-                    val = value
-            print(val)
+        return ''
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     HBNBCommand().cmdloop()
