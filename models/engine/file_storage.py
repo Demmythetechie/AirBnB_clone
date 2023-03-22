@@ -19,7 +19,7 @@ class FileStorage:
     def all(self):
         """Returns all the data saved in form of dictionary"""
 
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """
@@ -28,7 +28,7 @@ class FileStorage:
         """
 
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects[key] = obj
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """
@@ -36,11 +36,11 @@ class FileStorage:
         into the the json file __file_path
         """
 
-        with open(self.__file_path, 'w') as f:
-            for key in self.__objects:
-                if type(self.__objects[key]) != dict:
-                    self.__objects[key] = self.__objects[key].to_dict()
-            json.dump(self.__objects, f)
+        with open(FileStorage.__file_path, 'w') as f:
+            for key in FileStorage.__objects:
+                if type(FileStorage.__objects[key]) != dict:
+                    FileStorage.__objects[key] = FileStorage.__objects[key].to_dict()
+            json.dump(FileStorage.__objects, f)
 
     def reload(self):
         """
@@ -50,9 +50,8 @@ class FileStorage:
         """
 
         try:
-            with open(self.__file_path, encoding="utf-8") as f:
-                with open(self.__file_path, 'r') as f:
-                    for obj in json.load(f).values():
-                        self.new(eval(obj["__class__"])(**obj))
-        except Exception:
+            with open(FileStorage.__file_path, encoding="utf-8") as f:
+                for obj in json.load(f).values():
+                    self.new(eval(obj["__class__"])(**obj))
+        except FileNotFoundError:
             pass

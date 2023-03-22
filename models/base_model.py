@@ -6,7 +6,6 @@ creation and unique id
 """
 import uuid
 from datetime import datetime as dt
-import models
 
 
 class BaseModel:
@@ -28,15 +27,17 @@ class BaseModel:
             args (tuple):
         """
 
-        if len(kwargs) == 0:
+        from models import storage
+        if kwargs == {}:
             self.id = str(uuid.uuid4())
             self.created_at = dt.now()
             self.updated_at = dt.now()
-            models.storage.new(self)
+            storage.new(self)
         else:
-            self.id = kwargs["id"]
-            self.created_at = dt.fromisoformat(kwargs["created_at"])
-            self.updated_at = dt.fromisoformat(kwargs["updated_at"])
+            del kwargs["__class__"]
+            kwargs["created_at"] = dt.fromisoformat(kwargs["created_at"])
+            kwargs["updated_at"] = dt.fromisoformat(kwargs["updated_at"])
+            self.__dict__ = kwargs
 
     def __str__(self):
         """
@@ -52,8 +53,9 @@ class BaseModel:
         Saves the attributes in dictionary to the json file
         """
 
+        from models import storage
         self.updated_at = dt.now()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """
