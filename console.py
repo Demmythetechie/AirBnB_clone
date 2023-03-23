@@ -4,9 +4,12 @@
 
 
 from cmd import Cmd
-from models.base_model import BaseModel
 from models import storage
 from models.engine.file_storage import FileStorage
+from models.base_model import BaseModel
+from models.user import User
+
+classes = {"BaseModel", "User"}
 
 
 class HBNBCommand(Cmd):
@@ -21,11 +24,18 @@ class HBNBCommand(Cmd):
         """Quit command to exit the program"""
         return True
 
+    def emptyline(self):
+        """Returns prompt if no command is inputed"""
+        pass
+
     def do_create(self, line=""):
         """Creates new instances of the base model class"""
-        if line == "BaseModel":
-            my_model = BaseModel()
-            my_model.save()
+        if line in classes:
+            if line == "BaseModel":
+                my_model = BaseModel()
+            elif line == "User": 
+                my_model = User()
+            storage.save()
             print(my_model.id)
         elif line == "":
             print("** class name missing **")
@@ -41,7 +51,7 @@ class HBNBCommand(Cmd):
 
         if cl == '':
             print("** class name missing **")
-        elif ls[0] != "BaseModel":
+        elif ls[0] not in classes:
             print("** class doesn't exist **")
         elif len(ls) == 1:
             print("** instance id missing **")
@@ -64,7 +74,7 @@ class HBNBCommand(Cmd):
 
         if cl == '':
             print("** class name missing **")
-        elif ls[0] != "BaseModel":
+        elif ls[0] not in classes:
             print("** class doesn't exist **")
         elif len(ls) == 1:
             print("** instance id missing **")
@@ -83,14 +93,17 @@ class HBNBCommand(Cmd):
         This print all instance stored in file.json
         in dictionary format
         """
-
         storage.reload()
         dic = storage.all()
-        ls = [str(dic[key]) for key in dic]
-        if line == "" or line == "BaseModel":
-            print(ls)
+        ls = []
+        if line == "":
+            ls = [str(dic[key]) for key in dic]
+        elif line in classes:
+            ls = [str(dic[key]) for key in dic if line in key]
         else:
             print("** class doesn't exist **")
+
+        print(ls)
 
     def do_update(self, line=""):
         ls = line.split()

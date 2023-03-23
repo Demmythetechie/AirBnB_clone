@@ -45,7 +45,7 @@ class BaseModel:
         they are printed
         """
 
-        st = f"[{__class__.__name__}] ({self.id}) {self.__dict__}"
+        st = f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
         return st
 
     def save(self):
@@ -61,11 +61,9 @@ class BaseModel:
         """
         Returns attributes of the class to a dictionary format
         """
-
-        self.created_at = self.created_at.isoformat()
-        self.updated_at = self.updated_at.isoformat()
-        dic = {
-                "__class__": __class__.__name__,
-                }
+        dic = {}
         dic.update(self.__dict__)
+        dic['created_at'] = self.created_at.isoformat()
+        dic['updated_at'] = self.updated_at.isoformat()
+        dic['__class__'] = self.__class__.__name__
         return dic

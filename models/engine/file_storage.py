@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """This serialize and deserialize the dict from base model class"""
-from models.base_model import BaseModel
 import json
+from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
