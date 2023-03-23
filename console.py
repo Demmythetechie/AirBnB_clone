@@ -137,14 +137,14 @@ class HBNBCommand(Cmd):
 
         # Main code Algorithm
 
-        if len(ls) == 0 or ls[0] not in ["BaseModel"]:
+        if len(ls) == 0 or ls[0] not in classes:
             if len(ls) == 0:
                 print("** class name missing **")
-            elif ls[0] not in ["BaseModel"]:
+            elif ls[0] not in classes:
                 print("** class doesn't exist **")
         elif len(ls) < 2:
             print("** instance id missing **")
-        elif len(ls) < 3 or len(ls[2]) == 36 or ls[2] in ["BaseModel"]:
+        elif len(ls) < 3 or len(ls[2]) == 36 or ls[2] in classes:
             print("** attribute name missing **")
         elif len(ls) < 4:
             print("** value missing **")
