@@ -8,8 +8,14 @@ from models import storage
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.amenity import Amenity
+from models.review import Review
+from models.city import City
 
-classes = {"BaseModel", "User"}
+
+classes = {"BaseModel", "User", "Place", "State", "Amenity", "Review", "City"}
 
 
 class HBNBCommand(Cmd):
@@ -35,6 +41,16 @@ class HBNBCommand(Cmd):
                 my_model = BaseModel()
             elif line == "User": 
                 my_model = User()
+            elif line == "Place":
+                my_model = Place()
+            elif line == "State":
+                my_model = State()
+            elif line == "Amenity":
+                my_model = Amenity()
+            elif line == "Review":
+                my_model = Review()
+            elif line == "City":
+                my_model = City()
             storage.save()
             print(my_model.id)
         elif line == "":
@@ -123,7 +139,16 @@ class HBNBCommand(Cmd):
                     if ls[3][0] not in st:
                         ls = [ls[i] for i in range(2)]
                     else:
-                        ls = [ls[i] for i in range(4)]
+                        if ls[3][-1] not in st and ls[len(ls) -1][-1] in st:
+                            for i in range(4, len(ls)):
+                                if ls[i][-1] not in st:
+                                    ls[3] = ls[3] + " " + ls[i]
+                                else:
+                                    ls[3] = ls[3] + " " + ls[i]
+                                    break
+                            ls = [ls[i] for i in range(4)]
+                        else:
+                            ls = [ls[i] for i in range(2)]
 
         # This code below avoid the instance attribute of BaseModel
         # from being updated using the update command
