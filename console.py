@@ -15,7 +15,8 @@ from models.review import Review
 from models.city import City
 
 
-classes = {"BaseModel", "User", "Place", "State", "Amenity", "Review", "City"}
+classes = ["BaseModel", "User", "Place", "State", "Amenity", "Review", "City"]
+
 
 
 class HBNBCommand(Cmd):
@@ -33,6 +34,54 @@ class HBNBCommand(Cmd):
     def emptyline(self):
         """Returns prompt if no command is inputed"""
         pass
+
+    def default(self, line):
+
+        # Class Algoritm
+        cls_name = ""
+        for i in line:
+            if i == ".":
+                break
+            else:
+                cls_name += i
+
+
+        line = line.split('"')
+
+        # Command Algorithm
+        ls = line[0].split('.')
+        command = [ls[1][i] for i in range(len(ls[1]) - 1)]
+        command = [i for i in command if i != '(']
+        command = ''.join(command)
+
+
+        # Input Algorithm
+        arg = ""
+        for i in range(len(line)):
+            if i == 0:
+                arg += cls_name + ' '
+            if i % 2 != 0:
+                if i == 5:
+                    line[i] = '\"' + line[i] + '\"'
+                    arg += line[i]
+                else:
+                    arg += line[i]
+                if i != len(line) - 2:
+                    arg += ' '
+
+
+        if command == 'all':
+            self.do_all(cls_name)
+        elif command == 'count':
+            self.do_count(cls_name)
+        elif command == 'show':
+            self.do_show(arg)
+        elif command == 'destroy':
+            self.do_destroy(arg)
+        elif command == 'update':
+            self.do_update(arg)
+        
+
 
     def do_create(self, line=""):
         """Creates new instances of the base model class"""
@@ -57,6 +106,7 @@ class HBNBCommand(Cmd):
             print("** class name missing **")
         else:
             print("** class doesn't exist **")
+
 
     def do_show(self, cl=''):
         """Prints the string representation of an instance based
@@ -121,6 +171,19 @@ class HBNBCommand(Cmd):
 
         print(ls)
 
+
+    def do_count(self, line):
+        storage.reload()   
+        dic = storage.all()
+        ls = []
+        if line in classes:
+            ls = [str(dic[key]) for key in dic if line in key]
+            count = len(ls)
+        else:
+            print("** class doesn't exist **")
+
+        print(count)
+
     def do_update(self, line=""):
         ls = line.split()
         # This code below avoid the attribute name added from saving
@@ -139,7 +202,7 @@ class HBNBCommand(Cmd):
                     if ls[3][0] not in st:
                         ls = [ls[i] for i in range(2)]
                     else:
-                        if ls[3][-1] not in st and ls[len(ls) -1][-1] in st:
+                        if ls[3][-1] not in st or ls[len(ls) -1][-1] in st:
                             for i in range(4, len(ls)):
                                 if ls[i][-1] not in st:
                                     ls[3] = ls[3] + " " + ls[i]
@@ -149,6 +212,7 @@ class HBNBCommand(Cmd):
                             ls = [ls[i] for i in range(4)]
                         else:
                             ls = [ls[i] for i in range(2)]
+
 
         # This code below avoid the instance attribute of BaseModel
         # from being updated using the update command
